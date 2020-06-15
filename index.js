@@ -6,7 +6,6 @@ let counter2 = time;
 function agregarNave(){
     let nombre = document.getElementById("nombreNave").value;
     let descripcion = document.getElementById("descripcion").value;
-
     counter2 += 1;
     console.log(counter2);
     let naves = {
@@ -14,11 +13,12 @@ function agregarNave(){
         nombre,
         descripcion
     };
-    console.log(naves);
+    
     let db = firebase.database().ref("naves/"+nombre+"/informacion");
     db.set(naves)
         .then(() => {
             console.log("Nave añadida");
+            numeroNaves++;
             document.getElementById("nombreNave").value = "";
             document.getElementById("descripcion").value = "";
         })
@@ -44,7 +44,7 @@ function mostrarNaves(){
                 <div class="card-body">
                     ${element.val().informacion.descripcion}
                     <div class="my-2"></div>
-                    <button class="btn btn-primary" onclick="redireccionar('${element.val().informacion.nombre}')">Más información <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn btn-secondary" onclick="redireccionar('${element.val().informacion.nombre}')">Más información <i class="fas fa-arrow-right"></i></button>
                     <div class="my-2"></div>
                     <button type="submit" style="color:white; display: inline-block;" data-toggle="modal" data-target="#exampleModal" class="btn btn-info"
                     onclick="actualizarNave(${element.val().informacion.id},'${element.val().informacion.nombre}','${element.val().informacion.descripcion}')"
@@ -65,11 +65,9 @@ function mostrarNaves(){
     });
 }
 
-
 //Actualizar nave
 function actualizarNave(id,nombre,descripcion){   
     console.log(id,nombre,descripcion);
-    document.getElementById("nombreNave").value=nombre;
     document.getElementById("descripcion").value=descripcion;
 
     let actualizar = document.getElementById("actualizarNave");
@@ -80,18 +78,18 @@ function actualizarNave(id,nombre,descripcion){
     botonGuardar.style.display = 'none';
     let modal = document.getElementById('cancelarModal');
     modal.style.display = 'none';
+    document.getElementById('nombreNave').style.display='none';
   
     actualizar.onclick=function(){
-      let nombreNave = document.getElementById("nombreNave").value;
       let descripcion = document.getElementById("descripcion").value;
       let data = {
         id,
-        nombreNave,
+        nombre,
         descripcion
       };
-      firebase.database().ref('naves/' +nombreNave+"/informacion/").update(data).then(()=>{
+      firebase.database().ref('naves/' +nombre+"/informacion").update(data).then(()=>{
       console.log("Nave actualizada");
-      actualizar.innerHTML="Agregar"
+      actualizar.innerHTML="Agregar";
       document.getElementById("nombreNave").value='';
       document.getElementById("descripcion").value='';
     }).catch(err =>{
@@ -99,6 +97,7 @@ function actualizarNave(id,nombre,descripcion){
     });
   }
 }
+
 
 function cancelarEditar(){
     let botonGuardar = document.getElementById('agregarNave');
@@ -112,13 +111,12 @@ function cancelarEditar(){
     cancelar.style.display = 'none';
     document.getElementById("nombreNave").value='';
     document.getElementById("descripcion").value='';
-}
+  }
 
 function redireccionar(nombre){
     location.href='sensores.html'  
     localStorage.setItem('nave', nombre)  
 }
-
 function eliminarNave(nombre){
     let nave= firebase.database().ref("naves/"+nombre);
     nave.remove().then(()=>{
