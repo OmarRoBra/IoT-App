@@ -148,7 +148,7 @@ sensor.on("child_changed",function(data){
       case 'distancia':
         count++;
         let valor=sensorValue.valor;
-        if(count===101){ count=1; counts=[count]; }
+        if(count===110){ count=1; counts=[count]; }
         else{
         counts.push([count]);
         distancia.push([sensorValue.valor]);
@@ -166,7 +166,7 @@ sensor.on("child_changed",function(data){
       case 'altitud':
         count1++;
         let valor1=sensorValue.valor;
-        if(count1===101){count1=1; counts1=[count1]}
+        if(count1===110){count1=1; counts1=[count1]}
         else{
         counts1.push([count1]);
         altitud.push([sensorValue.valor]);}
@@ -180,7 +180,7 @@ sensor.on("child_changed",function(data){
       case 'humedad':
         count2++;
         let valor2=sensorValue.valor;
-        if(count2===101){count2=1; counts2=[count2];}
+        if(count2===110){count2=1; counts2=[count2];}
         else{
         counts2.push([count2]);
         humedad.push([sensorValue.valor]);}
@@ -203,7 +203,7 @@ sensor.on("child_changed",function(data){
       case 'presion':
         count3++;
         let valor3=sensorValue.valor;
-        if(count3===101){count3=1; counts3=[count3];}
+        if(count3===110){count3=1; counts3=[count3];}
         else{
         counts3.push([count3]);
         presion.push([sensorValue.valor]);}
@@ -220,7 +220,7 @@ sensor.on("child_changed",function(data){
       case 'temperatura':
         count4++;
         let valor4=sensorValue.valor;
-        if(count4===101){count4=1; counts4=[count4];}
+        if(count4===110){count4=1; counts4=[count4];}
         else{
         counts4.push([count4]);
         temperatura.push([sensorValue.valor]);}
@@ -240,8 +240,6 @@ sensor.on("child_changed",function(data){
    sensorFila.children[3].innerText=sensorValue.minimo;
    sensorFila.children[4].innerText=sensorValue.maximo;
 });
-
-
 
 //Actualizar sensor
 function actualizarSensor(id,nombre,minimo,maximo){   
