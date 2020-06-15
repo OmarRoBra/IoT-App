@@ -3,7 +3,7 @@ let time = date.getTime();
 let counter2 = time;
 
 //Guardar nave
-    function agregarNave(){
+function agregarNave(){
     let nombre = document.getElementById("nombreNave").value;
     let descripcion = document.getElementById("descripcion").value;
 
@@ -66,7 +66,7 @@ function mostrarNaves(){
 }
 
 
-//Actualizar sensor
+//Actualizar nave
 function actualizarNave(id,nombre,descripcion){   
     console.log(id,nombre,descripcion);
     document.getElementById("nombreNave").value=nombre;
@@ -98,9 +98,9 @@ function actualizarNave(id,nombre,descripcion){
       console.log('ALGO FALLÓ, CORRE: ',err);
     });
   }
-  }
+}
 
-  function cancelarEditar(){
+function cancelarEditar(){
     let botonGuardar = document.getElementById('agregarNave');
     botonGuardar.style.display = 'inline-block';
     botonGuardar.innerHTML="Agregar";
@@ -112,12 +112,13 @@ function actualizarNave(id,nombre,descripcion){
     cancelar.style.display = 'none';
     document.getElementById("nombreNave").value='';
     document.getElementById("descripcion").value='';
-  }
+}
 
 function redireccionar(nombre){
     location.href='sensores.html'  
     localStorage.setItem('nave', nombre)  
 }
+
 function eliminarNave(nombre){
     let nave= firebase.database().ref("naves/"+nombre);
     nave.remove().then(()=>{

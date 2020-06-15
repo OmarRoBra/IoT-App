@@ -32,9 +32,13 @@ firebase.initializeApp(firebaseConfig);
 function guardarSensor(){
       let nombreNave=localStorage.getItem('nave');
       let nombre = document.getElementById("nombre").value;
-      let tipo;
       let minimo = document.getElementById("minimo").value;
       let maximo = document.getElementById("maximo").value;
+      if(nombre==='luz'){
+        minimo = '-';
+        maximo = '-';
+      }
+      let tipo;
       switch(nombre){
         case 'altitud':
           tipo = 'BMP180'
@@ -80,14 +84,16 @@ function guardarSensor(){
   }
 
 //Leer datos - mostrar tabla
-function leerSensor(){
-  let nombreNave=localStorage.getItem('nave');
-  let sensor= firebase.database().ref("naves/"+nombreNave+"/sensores/");
-  sensor.on("child_added", function(data){
-      let sensorValue=data.val();
-      console.log(sensorValue)
-      document.getElementById("tabla").innerHTML+=`
-      <tr id="${sensorValue.nombre}">
+let tabla = document.getElementById("tabla");
+let nombreNave=localStorage.getItem('nave');
+let sensor= firebase.database().ref("naves/"+nombreNave+"/sensores/");
+
+sensor.on('value', function(snapshot){
+  tabla.innerHTML='';
+  snapshot.forEach((data) =>{
+    let sensorValue=data.val();
+    tabla.innerHTML += `
+    <tr id="${sensorValue.nombre}">
       <th scope="row">${sensorValue.id}</th>
       <td>${sensorValue.nombre}</td>
       <td>${sensorValue.tipo}</td>
@@ -99,24 +105,7 @@ function leerSensor(){
       <td><button class="btn btn-danger" type="submit" onclick="eliminarSensor('${sensorValue.nombre}')">Eliminar</button></td>
       `
   });
-
-  sensor.on("child_removed", function(data){
-    let sensorValue=data.val();
-    let sensores= document.getElementById(sensorValue.nombre);
-    if(sensores){sensores.remove()}
-  // console.log("Se elimino ", sensorValue);
 });
-
-sensor.on("child_changed",function(data){
-    let sensorValue=data.val();
-    let sensorFila= document.getElementById(sensorValue.nombre);
-   console.log("Se edito ", sensorValue);
-   sensorFila.children[1].innerText=sensorValue.nombre;
-   sensorFila.children[2].innerText=sensorValue.tipo;
-   sensorFila.children[3].innerText=sensorValue.minimo;
-   sensorFila.children[4].innerText=sensorValue.maximo;
-});
-}
 
 //Actualizar sensor
 function actualizarSensor(id,nombre,minimo,maximo){   
