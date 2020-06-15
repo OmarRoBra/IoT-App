@@ -67,7 +67,7 @@ function guardarSensor(){
           break;
       }
       counter+=1;
-      console.log(counter);
+      //console.log(counter);
       let sensor={
           id:counter,
           nombre,
@@ -140,8 +140,8 @@ let temperaturaMax=0;
 let temperaturaMin=0;
 sensor.on("child_changed",function(data){
     let sensorValue=data.val();
-    console.log("nombre",sensorValue.nombre);
-    console.log("maximo",sensorValue.maximo)
+    //console.log("nombre",sensorValue.nombre);
+    //console.log("maximo",sensorValue.maximo);
     let nombre=sensorValue.nombre;
 
     switch(nombre){
@@ -194,12 +194,11 @@ sensor.on("child_changed",function(data){
         else {document.getElementById("alertahumedad").innerHTML="";}
         break;       
       case 'luz':
-        luz++;
-        document.getElementById("luzRelay").innerHTML=luz+" veces";
+        console.log('relay1', sensorValue.relay1);
+        document.getElementById("luzRelay").innerHTML=sensorValue.relay1+" veces";
         break;
       case 'servomotor':
-        servomotor++;
-        document.getElementById("servomotorRelay").innerHTML=servomotor +" veces";
+        document.getElementById("servomotorRelay").innerHTML=sensorValue.relay2 +" veces";
         break;
       case 'presion':
         count3++;
